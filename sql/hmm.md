@@ -78,3 +78,14 @@ select blockingl.relation, blockingl.pid, blockingl.mode, blockingl.granted,
     join pg_stat_activity stat on stat.pid = blockingl.pid 
 
 ```
+
+
+#### check role membership
+
+```sql
+select rr.*, pam.* from pg_catalog.pg_roles rr 
+ join pg_catalog.pg_auth_members pam on rr."oid" = pam.roleid 
+ 
+```
+
+
