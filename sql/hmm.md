@@ -89,3 +89,12 @@ select rr.*, pam.* from pg_catalog.pg_roles rr
 ```
 
 
+#### in line table
+* using a CTE ...
+```sql
+with datar(col1,col2) as (
+    values (1,2), (2,3), (4,5)
+    )
+select col1, col2 from datar
+
+```
