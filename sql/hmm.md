@@ -98,3 +98,6 @@ with datar(col1,col2) as (
 select col1, col2 from datar
 
 ```
+
+#### COALESCE uses early stopping
+* I had a pretty expensive `COALESCE(col1, col2, ..., col50)` with 50 arguments recently. And in testing whether my non-null value was first or last made a big difference!
