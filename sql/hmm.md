@@ -128,11 +128,11 @@ INSERT INTO foo VALUES (1, 'ant', 'cat', 'chimp'), (2, 'grape', 'mint', 'basil')
 select * from foo
 ```
 
-id,a,b,c
+id|a|b|c
 --|--|--|--
-1,ant,cat,chimp
-2,grape,mint,basil
-3,blur,cart,jump
+1|ant|cat|chimp
+2|grape|mint|basil
+3|blur|cart|jump
 
 ```
 SELECT id,
@@ -142,14 +142,15 @@ FROM foo
 ORDER BY id;
 ```
 
-id,colname,thing
+
+id|colname|thing
 --|--|--
-1,a,ant
-1,b,cat
-1,c,chimp
-2,a,grape
-2,b,mint
-2,c,basil
-3,a,blur
-3,b,cart
-3,c,jump
+1|a|ant
+1|b|cat
+1|c|chimp
+2|a|grape
+2|b|mint
+2|c|basil
+3|a|blur
+3|b|cart
+3|c|jump
