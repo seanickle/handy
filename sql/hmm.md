@@ -111,3 +111,45 @@ UndefinedFunction: function round(double precision, integer) does not exist
 ```
 And surely enough after reading the [docs](https://www.postgresql.org/docs/9.6/functions-math.html) , oddly enough `round` with precision is only defined for `numeric` and not `float8` (aka `double precision`). After casting to `numeric` my result of `round(table1.col1::numeric, 3) = round(table2.col1::numeric, 3)` was `0.990`. Can dig deeper about the implementation later!
 
+#### To infinity and beyond
+
+```sql
+select 999999> 'infinity'::float 
+```
+
+#### unnesting , the opposite of crosstab (aka pivoting)
+
+```sql
+CREATE  TABLE foo (id int, a text, b text, c text);
+INSERT INTO foo VALUES (1, 'ant', 'cat', 'chimp'), (2, 'grape', 'mint', 'basil'),
+                        (3, 'blur', 'cart', 'jump');
+```
+```sql
+select * from foo
+```
+
+id,a,b,c
+--|--|--|--
+1,ant,cat,chimp
+2,grape,mint,basil
+3,blur,cart,jump
+
+```
+SELECT id,
+       unnest(array['a', 'b', 'c']) AS colname,
+       unnest(array[a, b, c]) AS thing
+FROM foo
+ORDER BY id;
+```
+
+id,colname,thing
+--|--|--
+1,a,ant
+1,b,cat
+1,c,chimp
+2,a,grape
+2,b,mint
+2,c,basil
+3,a,blur
+3,b,cart
+3,c,jump
