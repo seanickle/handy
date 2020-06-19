@@ -154,3 +154,16 @@ id|colname|thing
 3|a|blur
 3|b|cart
 3|c|jump
+
+#### copy paste a table with create table as
+* Copy-pastaing a table with `CREATE TABLE AS` is sort of obvious, but laying it out doesn't hurt
+
+```sql
+CREATE TABLE blah_backup AS
+SELECT *
+FROM source_table
+
+```
+
+* [cool stack overflow response here too](https://dba.stackexchange.com/questions/156105/create-table-as-vs-select-into?newreg=f13041cd0d564c7f97956cde8793af0e)
+
