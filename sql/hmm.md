@@ -197,4 +197,13 @@ FROM   information_schema.table_privileges
 select * from pg_user
 ```
 
+#### set lock_timeout to avoid waiting endlessly on table alter
+```sql
+# example from article , which bit me personally..
+SET lock_timeout TO '2s';
+ALTER TABLE items ADD COLUMN last_update timestamptz;
+```
+* source: [here](https://www.citusdata.com/blog/2018/02/22/seven-tips-for-dealing-with-postgres-locks/)
+
+
 
