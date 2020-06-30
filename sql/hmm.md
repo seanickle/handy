@@ -167,3 +167,16 @@ FROM source_table
 
 * [cool stack overflow response here too](https://dba.stackexchange.com/questions/156105/create-table-as-vs-select-into?newreg=f13041cd0d564c7f97956cde8793af0e)
 
+
+
+#### Create user
+
+```sql
+CREATE USER blah_user WITH PASSWORD 'swear_words';
+
+GRANT CONNECT ON DATABASE mycooldb TO blah_user;
+GRANT USAGE ON SCHEMA myschema TO blah_user;
+GRANT SELECT ON myschema.quick_table TO blah_user;
+
+```
+
