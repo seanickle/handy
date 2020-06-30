@@ -179,4 +179,22 @@ GRANT USAGE ON SCHEMA myschema TO blah_user;
 GRANT SELECT ON myschema.quick_table TO blah_user;
 
 ```
+* Change password
+
+```sql
+ALTER USER user_name WITH PASSWORD 'new_password';
+
+```
+* check grants.. ( user w/ appropriate permissions )
+
+```sql
+SELECT table_catalog, table_schema, table_name, privilege_type, grantee
+FROM   information_schema.table_privileges 
+```
+* list users
+
+```sql
+select * from pg_user
+```
+
 
