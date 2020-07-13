@@ -207,3 +207,31 @@ ALTER TABLE items ADD COLUMN last_update timestamptz;
 
 
 
+#### arbitrarily select unrelated data for presentation purposes
+* Not sure if this is the best way to do this, but I wanted to be able select three different max values in one shot
+```sql
+with arf as (select 1 as aa, 
+            max(id) as max_arf
+            from mytable 
+            where key = 'arf'),
+bar as (select 1 as aa, 
+            max(id) as max_bar
+            from mytable
+            where key = 'bar'),
+car as (select 1 as aa,
+            max(id) as max_car
+            from mytable 
+            where key = 'car')
+            
+select arf.*, bar.*, car.*
+from arf join bar on arf.aa = bar.aa
+join car on arf.aa = car.aa
+
+```
+
+aa|max_arf|aa|max_bar|aa|max_car
+--|--|--|--|--|--
+1|4,585,834|1|4,046,591|1|4,585,835
+
+
+
