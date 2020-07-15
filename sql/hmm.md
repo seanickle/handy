@@ -234,4 +234,17 @@ aa|max_arf|aa|max_bar|aa|max_car
 1|4,585,834|1|4,046,591|1|4,585,835
 
 
+#### Random sample from a table
+* Read this cool solution [here](https://anitagraser.com/2011/03/12/selecting-a-random-sample-from-postgresql/)
+
+```sql
+
+SELECT * FROM myTable
+WHERE attribute = 'myValue'
+ORDER BY random()
+LIMIT 1000;
+
+
+```
+
 
