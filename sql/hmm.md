@@ -248,3 +248,44 @@ LIMIT 1000;
 ```
 
 
+#### in place jsonb  extraction / unnesting
+* If we have a table with a `jsonb` type column , called `value` , and we want to "un-nest" or normalize some data that happens to be one level below, in the jsonb...
+
+```python
+
+ids_sql = '(1, 2, 3)' 
+blah_key = 'green_type' # some additional constraint other than the id
+
+target_cols = ['norm_col_1', 'norm_col_2', 'norm_col_3']
+
+# Map between 
+foovec = [['norm_col_1', 'nested_col_1'], 
+          ['norm_col_2', 'nested_col_2'],
+          ['norm_col_3', 'nested_col_3']]
+
+select_cols = ', '.join([f'''value->>'{x[1]}' as "{x[0]}"'''
+                         for x in foovec])
+
+col_str = ', '.join([f'"{x}"' for x in target_cols])
+targetcol_str = ', '.join([f'blah."{x}"' for x in target_cols])
+
+```
+
+```sql
+UPDATE {schema}.mytable as dp
+SET ({col_str}) = ({targetcol_str})
+FROM (select id, key, 
+      {select_cols}  -- json->expressions->to->unpack->data!
+      from {schema}.mytable
+      where {ids_sql}
+            and key = '{blah_key}'
+        ) as blah(id, key, {col_str})
+
+WHERE (blah.id = dp.id
+       AND blah.key = dp.key)
+
+```
+
+
+
+
