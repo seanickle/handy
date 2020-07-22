@@ -287,5 +287,31 @@ WHERE (blah.id = dp.id
 ```
 
 
+#### order of joins matters looks like 
+* I had two gigantic tables (10million+ each) , t1, t2, 
+* this first query was taking forever...
 
+```sql
+with ids(foo) as (
+    select * from generate_series(1, 5000) as foo    
+    )    
+
+select * 
+from t1 join t2 
+on t1.id = t2.id
+where t2.id in (select foo from ids)
+```
+
+* but this one was quick , I think because the join was done after constraining the ids not before
+
+```sql
+with ids(foo) as (
+    select * from generate_series(1, 5000) as foo    
+    )    
+
+select * 
+from t1 join t2 
+on t1.id = t2.id
+where t1.id in (select foo from ids)
+```
 
