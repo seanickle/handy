@@ -47,3 +47,15 @@ fig.show()
 ```
 
 <img src="https://github.com/seanickle/handy/blob/master/assets/Screen%20Shot%202020-07-23%20at%2011.40.26%20AM.png?raw=true" width="50%">
+
+
+#### Heatmaps are nice
+
+```python
+plt.figure(figsize=(10,10))
+plt.imshow(bitmap)
+plt.colorbar()
+plt.grid(False)
+plt.show()
+```
+
