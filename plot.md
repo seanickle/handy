@@ -65,6 +65,11 @@ plt.show()
 - Instead of trying to use clustering analysis like [dbscan](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) which would have probably worked, I just started collecting the time series `np.histogram` and quantile data and I was able to visually inspect / prove that the median is a good enough statistic in this case, without too much extra data preprocessing required!
 - sampling data from athena every 7 days ...
 
+<img src="https://github.com/seanickle/handy/blob/master/assets/2020-07-25-handy-histograms/2020-07-24-zibby-timeline_30_0.png?raw=true">
+
+<img src="https://github.com/seanickle/handy/blob/master/assets/2020-07-25-handy-histograms/2020-07-24-zibby-timeline_30_3.png?raw=true">
+
+
 ```python
 d1 = datetime.date(2019, 1, 1)
 d2 = datetime.date(2020, 7, 1)
@@ -83,11 +88,6 @@ for dt in tqdm(dd):
     outvec.append({'hist': hist, 'quantiles': quantiles,
                   'date': dt.strftime('%Y-%m-%d'),
                   'mean': mean})
-    
-    
-    
-
-
 ```
 
 ```python
@@ -101,6 +101,25 @@ def get_quantiles(unsorted):
     maximum = data[-1]
     return [minimum, Q1, median, Q3, maximum]
 
+def show_da_stats(bundle):
+    H, bins = bundle['hist']
+    quantiles = bundle['quantiles']
+    # plt.plot(x[1][:-1], x[0], drawstyle='steps')
+    #print(H, bins)
+    #print(quantiles)
+    plt.scatter(quantiles, [1, 1, 1, 1, 1])
+    plt.axvline(quantiles[1], label='q:25%')
+    plt.axvline(quantiles[2], label='q:50%')
+    plt.axvline(quantiles[3], label='q:75%')
+    
+    plt.title(f"preapprove walltime histogram at {bundle['date']}")
+    plt.plot(bins, np.insert(H, 0, H[0]), drawstyle='steps', color='green')
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
+bundle = outvec[0]
+show_da_stats(bundle)
 ```
 
 
