@@ -59,3 +59,49 @@ plt.grid(False)
 plt.show()
 ```
 
+
+#### using `np.histogram` and quantiles to spot check bimodal distributions
+- I had this use case where I wanted to collect walltime from a service, from a dataset where a bimodal distribution was basically a given. I wanted thea mean of the second distribution. 
+- Instead of trying to use clustering analysis like [dbscan](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) which would have probably worked, I just started collecting the time series `np.histogram` and quantile data and I was able to visually inspect / prove that the median is a good enough statistic in this case, without too much extra data preprocessing required!
+- sampling data from athena every 7 days ...
+
+```python
+d1 = datetime.date(2019, 1, 1)
+d2 = datetime.date(2020, 7, 1)
+dd = ddu.range_dates(d1, d2, 7)
+
+# outvec = [] # extend..
+
+for dt in tqdm(dd):
+    query = make_query(dt)
+    athenadf = daa.run_it(query, query_name='Unsaved')
+
+    hist = np.histogram(athenadf.backend_processing_time.tolist(), 
+                    bins=10, range=None)
+    mean = np.mean(athenadf.backend_processing_time.tolist())
+    quantiles = get_quantiles(athenadf.backend_processing_time.tolist())
+    outvec.append({'hist': hist, 'quantiles': quantiles,
+                  'date': dt.strftime('%Y-%m-%d'),
+                  'mean': mean})
+    
+    
+    
+
+
+```
+
+```python
+import numpy as np
+def get_quantiles(unsorted):
+    data = sorted(unsorted)
+    minimum = data[0]
+    Q1 = np.percentile(data, 25, interpolation = 'midpoint') 
+    median = np.median(data)
+    Q3 = np.percentile(data, 75, interpolation = 'midpoint') 
+    maximum = data[-1]
+    return [minimum, Q1, median, Q3, maximum]
+
+```
+
+
+
