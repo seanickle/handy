@@ -63,20 +63,22 @@ plt.show()
 #### using `np.histogram` and quantiles to spot check bimodal distributions
 - I had this use case where I wanted to collect walltime from a service, from a dataset where a bimodal distribution was basically a given. I wanted thea mean of the second distribution. 
 - Instead of trying to use clustering analysis like [dbscan](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) which would have probably worked, I just started collecting the time series `np.histogram` and quantile data and I was able to visually inspect / prove that the median is a good enough statistic in this case, without too much extra data preprocessing required!
-- sampling data from athena every 7 days ...
+- sampling data from athena every 7 days , here are two examples below. 
 
 <img src="https://github.com/seanickle/handy/blob/master/assets/2020-07-25-handy-histograms/2020-07-24-zibby-timeline_30_0.png?raw=true">
 
-<img src="https://github.com/seanickle/handy/blob/master/assets/2020-07-25-handy-histograms/2020-07-24-zibby-timeline_30_3.png?raw=true">
+<img src="https://github.com/seanickle/handy/blob/master/assets/2020-07-25-handy-histograms/2020-07-24-zibby-timeline_33_0.png?raw=true">
 
+- supporting codes... (I didnt add code for `daa.run_it` but basically that just pulls data into a dataframe with a column  `backend_processing_time` that is being used here. And `make_query` just makes a query for a particular date to pull that data. So nothing really special about those. They can be replaced with any particular method of gathering data.)
 
 ```python
+import datetime
+from tqdm import tqdm
 d1 = datetime.date(2019, 1, 1)
 d2 = datetime.date(2020, 7, 1)
 dd = ddu.range_dates(d1, d2, 7)
 
-# outvec = [] # extend..
-
+# outvec = []
 for dt in tqdm(dd):
     query = make_query(dt)
     athenadf = daa.run_it(query, query_name='Unsaved')
@@ -92,6 +94,7 @@ for dt in tqdm(dd):
 
 ```python
 import numpy as np
+import matplotlib.pyplot as plt
 def get_quantiles(unsorted):
     data = sorted(unsorted)
     minimum = data[0]
