@@ -315,3 +315,23 @@ on t1.id = t2.id
 where t1.id in (select foo from ids)
 ```
 
+#### hashtag binning
+* `width_bucket` very nice func for binning some data and then running a `sum()` aggregation afterwards for instance, 
+
+```sql
+with deltas(delta, countt) as (
+    values (10, 3), (11, 4), (19, 9), 
+           (50, 2), (2, 8), (189, 3), 
+           (77, 98), (178, 3)),
+binned as (
+    select  width_bucket (deltas.delta::float, array[
+                0::float, 50::float, 100::float, 150::float,200::float, 2000::float] ) as bin, 
+    deltas.delta, deltas.countt
+    from deltas 
+)
+select bin, sum(countt) 
+from binned
+group by bin 
+order by bin
+```
+
