@@ -335,3 +335,8 @@ group by bin
 order by bin
 ```
 
+bin|sum
+--|--
+1|24
+2|100
+4|6
