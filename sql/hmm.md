@@ -340,3 +340,15 @@ bin|sum
 1|24
 2|100
 4|6
+
+
+#### auto make that markdown table header line
+
+```python
+def make_table_header_line(header):
+    dashes = ['--' for x in header.split('|')]
+    return '|'.join(dashes)
+    
+
+```
+
