@@ -317,6 +317,32 @@ where t1.id in (select foo from ids)
 
 #### hashtag binning
 * `width_bucket` very nice func for binning some data and then running a `sum()` aggregation afterwards for instance, 
+* the array passed to `width_bucket` is an array of the lower bounds
+```sql
+with deltas(delta, countt) as (
+    values (-1, 3), (0, 4), (19, 9), 
+           (50, 2), (2, 8), (189, 3), 
+           (2000, 98), (2001, 3)),
+binned as (
+    select  width_bucket (deltas.delta::float, array[
+                0, 50, 100, 150,200, 2000]::float[] ) as bin, 
+    deltas.delta, deltas.countt
+    from deltas 
+)
+select delta, countt, bin  -- sum(countt) 
+from binned 
+```
+
+delta|countt|bin
+--|--|--
+-1|3|0
+0|4|1
+19|9|1
+50|2|2
+2|8|1
+189|3|4
+2,000|98|6
+2,001|3|6
 
 ```sql
 with deltas(delta, countt) as (
