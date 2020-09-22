@@ -126,4 +126,16 @@ show_da_stats(bundle)
 ```
 
 
+#### Nice how you can save figures from ipython if you need to
+
+```python
+import pylab
+import matplotlib.pyplot as plt
+plt.hist([1,2,3,4,1,2,3,4,1,2,1,2,2], bins=50)
+plt.title('Histogram blah')
+out_loc = '/your/location.blah.png'
+print('saving to ', out_loc)
+pylab.savefig(out_loc)
+pylab.close()
+```
 
