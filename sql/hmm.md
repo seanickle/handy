@@ -392,3 +392,18 @@ SELECT con.*
              AND rel.relname = '<table name>';
 ```
 
+* Oh wow... also this section from the [ALTER TABLE ADD CONSTRAINT postgresql doc ](https://www.postgresql.org/docs/9.6/sql-altertable.html) was super useful/well written..
+
+> _Scanning a large table to verify a new foreign key or check constraint can take a long time, and other updates to the table are locked out until the `ALTER TABLE ADD CONSTRAINT` command is committed. The main purpose of the `NOT VALID` constraint option is to reduce the impact of adding a constraint on concurrent updates. With `NOT VALID`, the `ADD CONSTRAINT` command does not scan the table and can be committed immediately. After that, a VALIDATE CONSTRAINT command can be issued to verify that existing rows satisfy the constraint. The validation step does not need to lock out concurrent updates, since it knows that other transactions will be enforcing the constraint for rows that they insert or update; only pre-existing rows need to be checked. Hence, validation acquires only a `SHARE UPDATE EXCLUSIVE` lock on the table being altered. (If the constraint is a foreign key then a ROW SHARE lock is also required on the table referenced by the constraint.) In addition to improving concurrency, it can be useful to use `NOT VALID` and `VALIDATE CONSTRAINT` in cases where the table is known to contain pre-existing violations. Once the constraint is in place, no new violations can be inserted, and the existing problems can be corrected *at leisure* until `VALIDATE CONSTRAINT` finally succeeds._
+
+```sql
+-- step one.
+alter table    the_table_name
+ADD constraint the_constraint_name unique (col1, col2) NOT VALID 
+
+-- step two..
+alter table the_table_name
+    VALIDATE CONSTRAINT the_constraint_name
+```
+
+
