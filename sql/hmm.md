@@ -406,4 +406,20 @@ alter table the_table_name
     VALIDATE CONSTRAINT the_constraint_name
 ```
 
+#### Having
+* Interesting conditional syntax aroung group by , without using a CTE...
+
+```sql
+select id, key  , count(*) countt
+from my_table
+
+group by id, key 
+having count(*) > 1
+```
+* =>
+
+id|key|countt
+--|--|--
+1|foo|2
+2|bar|3
 
