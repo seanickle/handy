@@ -431,6 +431,15 @@ InvalidTextRepresentation: invalid input syntax for integer: ""
 ```
 * This typically means a blank string is being coaxed as an integer somewhere. 
 * The solution is basically to find these and make sure they're nulls on the db.
+* And can also partition with an `id` column too for example, to do a little at a time to experiment.
+```sql
+update mytable
+    set blahcol = null
+where  blahcol = ''
+    and ( id between 1 and 100000)
 
 
+
+
+```
 
