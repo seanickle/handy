@@ -423,3 +423,14 @@ id|key|countt
 1|foo|2
 2|bar|3
 
+
+#### invalid input syntax for integer
+* Having come across this a few times, writing down here..
+```
+InvalidTextRepresentation: invalid input syntax for integer: ""
+```
+* This typically means a blank string is being coaxed as an integer somewhere. 
+* The solution is basically to find these and make sure they're nulls on the db.
+
+
+
