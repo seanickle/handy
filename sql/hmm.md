@@ -322,7 +322,10 @@ where t1.id in (select foo from ids)
 with deltas(delta, countt) as (
     values (-1, 3), (0, 4), (19, 9), 
            (50, 2), (2, 8), (189, 3), 
-           (2000, 98), (2001, 3)),
+           (2000, 98), (2001, 3),
+           (null::int, 2),
+           (null, 9)
+           ),
 binned as (
     select  width_bucket (deltas.delta::float, array[
                 0, 50, 100, 150,200, 2000]::float[] ) as bin, 
@@ -343,6 +346,8 @@ delta|countt|bin
 189|3|4
 2,000|98|6
 2,001|3|6
+[NULL]|2|[NULL]
+[NULL]|9|[NULL]
 
 ```sql
 with deltas(delta, countt) as (
