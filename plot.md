@@ -115,7 +115,7 @@ def show_da_stats(bundle):
     plt.axvline(quantiles[2], label='q:50%')
     plt.axvline(quantiles[3], label='q:75%')
     
-    plt.title(f"preapprove walltime histogram at {bundle['date']}")
+    plt.title(f"walltime histogram at {bundle['date']}")
     plt.plot(bins, np.insert(H, 0, H[0]), drawstyle='steps', color='green')
     plt.grid(True)
     plt.legend()
