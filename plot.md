@@ -208,6 +208,9 @@ with plt.style.context('fivethirtyeight'):
     ax = fig.add_subplot(111, )
     ax.hist([1, 2, 1, 2, 2, 3, 4, 5, 6], bins=2, )
 ```
+
+<img src="https://github.com/namoopsoo/handy/blob/master/assets/Screen%20Shot%202020-10-22%20at%202.08.18%20PM.png" width="50%">
+
 * Actually this looks like a good compromise with tips from [here](https://stackoverflow.com/questions/14088687/how-to-change-plot-background-color)
 ```python
 # print(plt.style.available)
@@ -223,6 +226,6 @@ ax.set_facecolor('xkcd:salmon')
     #help(ax) # set_subplotspec
 ```
 
-<img src="https://github.com/namoopsoo/handy/blob/raw/assets/Screen%20Shot%202020-10-22%20at%202.08.18%20PM.png" width="50%">
-<img src="https://github.com/namoopsoo/handy/blob/raw/assets/Screen%20Shot%202020-10-22%20at%202.10.21%20PM.png" width="50%">
+
+<img src="https://github.com/namoopsoo/handy/blob/master/assets/Screen%20Shot%202020-10-22%20at%202.10.21%20PM.png" width="50%">
 
