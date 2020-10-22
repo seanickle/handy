@@ -188,3 +188,41 @@ fashion_mnist = keras.datasets.fashion_mnist
 image = train_mages[3]
 ```
 
+#### Plot colors
+* Per [Stackoverflow](https://stackoverflow.com/questions/14088687/how-to-change-plot-background-color) , can use `ax.set_facecolor`
+* more [colors](https://matplotlib.org/api/colors_api.html?highlight=color#module-matplotlib.colors)
+* This technique will set the foreground but not background
+```python
+fig = plt.figure(figsize=(6, 6))
+ax = fig.add_subplot(111, )
+ax.hist([1, 2, 1, 2, 2, 3, 4, 5, 6], bins=2, )
+ax.set_facecolor('xkcd:salmon')
+
+```
+* For the background this helped.. ( per [here](https://matplotlib.org/tutorials/introductory/customizing.html) )
+```python
+# print(plt.style.available)
+# ['Solarize_Light2', '_classic_test_patch', 'bmh', 'classic', 'dark_background', 'fast', 'fivethirtyeight', 'ggplot', 'grayscale', 'seaborn', 'seaborn-bright', 'seaborn-colorblind', 'seaborn-dark', 'seaborn-dark-palette', 'seaborn-darkgrid', 'seaborn-deep', 'seaborn-muted', 'seaborn-notebook', 'seaborn-paper', 'seaborn-pastel', 'seaborn-poster', 'seaborn-talk', 'seaborn-ticks', 'seaborn-white', 'seaborn-whitegrid', 'tableau-colorblind10']
+with plt.style.context('fivethirtyeight'):
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(111, )
+    ax.hist([1, 2, 1, 2, 2, 3, 4, 5, 6], bins=2, )
+```
+* Actually this looks like a good compromise with tips from [here](https://stackoverflow.com/questions/14088687/how-to-change-plot-background-color)
+```python
+# print(plt.style.available)
+# ['Solarize_Light2', '_classic_test_patch', 'bmh', 'classic', 'dark_background', 'fast', 'fivethirtyeight', 'ggplot', 'grayscale', 'seaborn', 'seaborn-bright', 'seaborn-colorblind', 'seaborn-dark', 'seaborn-dark-palette', 'seaborn-darkgrid', 'seaborn-deep', 'seaborn-muted', 'seaborn-notebook', 'seaborn-paper', 'seaborn-pastel', 'seaborn-poster', 'seaborn-talk', 'seaborn-ticks', 'seaborn-white', 'seaborn-whitegrid', 'tableau-colorblind10']
+
+fig = plt.figure(figsize=(6, 6))
+fig.patch.set_facecolor('xkcd:mint green')
+ax = fig.add_subplot(111, )
+ax.hist([1, 2, 1, 2, 2, 3, 4, 5, 6], bins=2, )
+
+ax.set_facecolor('xkcd:salmon')
+    #plt.show(transparent=False)
+    #help(ax) # set_subplotspec
+```
+
+<img src="https://github.com/namoopsoo/handy/blob/raw/assets/Screen%20Shot%202020-10-22%20at%202.08.18%20PM.png" width="50%">
+<img src="https://github.com/namoopsoo/handy/blob/raw/assets/Screen%20Shot%202020-10-22%20at%202.10.21%20PM.png" width="50%">
+
