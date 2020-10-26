@@ -1,0 +1,150 @@
+#[color "diff"]
+#    plain = normal
+#    meta = bold
+#    frag = cyan
+#    old = red black     # red is text, black is background
+#    new = green cyan ul    # green is text, cyan is background
+#    commit = yellow
+#    whitespace = black
+
+[merge]
+    tool = opendiff
+
+[filter "lfs"]
+    required = true
+    clean = git-lfs clean %f
+    smudge = git-lfs smudge %f
+[core]
+    pager = less
+  
+[alias]
+    recent = for-each-ref --sort=-committerdate --count 10
+    myrecent = for-each-ref --sort=-committerdate --count 10 'refs/heads'
+    remrecent = for-each-ref --sort=-committerdate --count 10 'refs/remotes'
+    current = rev-parse --abbrev-ref HEAD
+    latestmerges = rev-list --merges --first-parent --pretty=oneline origin/master~10..origin/master
+
+    mycount = rev-list --pretty=oneline origin/master..HEAD
+
+    # On Origin, what are the merges ahead of my branch
+    originmerges = "!f() { \
+        if [ $# = '1' ]; then \
+          mybranch=$1 ; \
+        else \
+          mybranch='HEAD'; \
+        fi ; \
+        ancestor=$(git merge-base origin/master ${mybranch}); \
+        git rev-list --merges --first-parent --pretty='%h %ar %d %s' ${ancestor}..origin/master ;\
+              }; f"
+
+    myfiles = "!f() { \
+        ancestor=$(git merge-base origin/master HEAD); \
+        git diff --name-only  $ancestor ;\
+              }; f"
+
+    diffmaster = "!f() { \
+        ancestor=$(git merge-base origin/master HEAD); \
+        git diff  $ancestor HEAD ;\
+              }; f"
+
+    commonancestor = "!f() { \
+        if [ $# = '1' ]; then \
+          branch=$1 ; \
+        else \
+          branch='HEAD'; \
+        fi ; \
+        ancestor=$(git merge-base origin/master ${branch} ); \
+        echo ${ancestor} ; \
+              }; f"
+     
+
+#     tagmigrations = "!f() { \ 
+#         source ~/.git_tag_migrations.sh ; \ 
+#         last_n=${1}; \
+#         get_tag_django_migrations ${last_n}; \
+#               }; f"
+
+    mycommits = "!f() { \
+        if [ $# = '1' ]; then \
+          parent=$1 ; \
+        else \
+          parent='origin/master'; \
+        fi ; \
+        ancestor=$(git merge-base ${parent} HEAD); \
+        git rev-list ${ancestor}..HEAD  ;\
+              }; f"
+
+    # http://blogs.atlassian.com/2014/10/advanced-git-aliases/
+    # ra = "!f() { \
+    #
+    #         git remote add $1 https://bitbucket.org/$2.git; \
+    #
+    #               }; f"
+    # attribution: http://haacked.com/archive/2014/07/28/github-flow-aliases/
+    bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+
+    headlint = "!f() { \
+        if [ $# = '1' ]; then \
+          FILES=$1 ; \
+        else \
+          FILES=`git diff --name-only HEAD -- '*py' `; \
+        fi ; \
+        for file in $FILES;   \
+        do echo '====================='; \
+        echo $file; \
+        echo '====================='; \
+        lint_result=$(pylint $file) ; \
+        echo \"${lint_result}\" | egrep '^E' | grep -v 'no-member' ; \
+        echo \"${lint_result}\" | egrep '^W' | grep -i 'unused' ; \
+        echo; echo; \
+        done;\
+        }; f"
+
+    # without input, lint files changed since the common ancestor with your branch and origin/master 
+    difflint = "!f() { \
+        if [ $# = '1' ]; then \
+          COMMIT=$1 ; \
+        else \
+          COMMIT=$(git merge-base origin/master HEAD ); \
+        FILES=`git diff --name-only ${COMMIT} -- '*py' `; \
+        fi ; \
+        for file in $FILES;   \
+        do echo '====================='; \
+        echo $file; \
+        echo '====================='; \
+        lint_result=$(pylint $file) ; \
+        echo \"${lint_result}\" | egrep '^E' | grep -v 'no-member' ; \
+        echo \"${lint_result}\" | egrep '^W' | grep -i 'unused' ; \
+        echo; echo; \
+        done;\
+        }; f"
+
+#    alllint = "!f() { \ 
+#        FILES=`git diff --name-only  $ancestor`;\
+#        for file in $FILES; \
+#        do echo '====================='; \
+#        echo $file; \
+#        echo '====================='; \
+#        pylint $file | egrep '^E' | grep -v 'no-member'; \
+#        echo; echo; \
+#        done;\
+#        }; f"
+
+    caa = commit -a --amend -C HEAD
+
+    # from http://stackoverflow.com/q/39151523/472876 ...
+    gitx = log  --graph --pretty=oneline --abbrev-commit --decorate origin --all
+    # took out the --all
+
+    # .. need method for comparing merge base w arbitrary branch
+    gitxx = log --graph --topo-order --decorate --oneline --boundary
+
+    # all tags..
+    alltags = log --no-walk --tags --pretty='%h %ar %d %s' --decorate=full
+
+    # migrations = log -p --name-only origin/master blah/migrations/ 
+    migrations = "!f() { \
+          django_migrations_dir=$1 ; \
+          git log -p --name-only origin/master ${django_migrations_dir} ; \
+          }; f"
+
