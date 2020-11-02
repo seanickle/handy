@@ -448,3 +448,10 @@ where  blahcol = ''
 
 ```
 
+#### A warning about CTEs 
+* Per [this article](https://hakibenita.medium.com/be-careful-with-cte-in-postgresql-fca5e24d2119)  , postgresql will run full CTE and store it, which is why I feel the only practical way of using CTEs in large expressions is along with  partitioning .
+* In other words, although most postgresql queries will be able to run only the first `200` rows like a "generator"  and return that to you really quickly, when you have a CTE in there, it has to run the whole thing first.
+
+
+
+
