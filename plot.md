@@ -223,3 +223,14 @@ with plt.style.context('fivethirtyeight'):
 * more [colors](https://matplotlib.org/api/colors_api.html?highlight=color#module-matplotlib.colors)
 
 
+#### How to display a png from a file
+
+```python
+from IPython.display import Image, display
+loc = 'somefile.png'
+display(Image(filename=loc))
+
+
+```
+
+
