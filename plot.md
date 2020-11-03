@@ -233,4 +233,17 @@ display(Image(filename=loc))
 
 ```
 
+#### Prevent some parts of figure from getting cut off 
+* This `bbox_inches='tight'` option really helps
+```python
+with plt.style.context('fivethirtyeight'):
+    plt.plot(np.random.randint(0, 100, size=100), np.random.randint(0, 100, size=100))
+    plt.title('blah title')
+    out_loc = 'blah.png'
+    print('saving to ', out_loc)
+    pylab.savefig(out_loc, bbox_inches='tight')
+    pylab.close()
+
+```
+
 
