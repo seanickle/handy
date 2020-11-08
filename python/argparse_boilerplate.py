@@ -4,11 +4,15 @@ def bake_options():
     return [
             [['--verbose', '-v'],
                 {'action': 'store_true',
-                    'help': 'pass to to be verbose with commands'},
+                    'help': 'pass to to be verbose with commands.'},
                 ],
             [['--dry-run', '-D'],
                 {'action': 'store_true',
-                    'help': 'Dry run. Just print the command.  '},]
+                    'help': 'Dry run. Just print the command.'},],
+
+            [['--input-file', '-f'],
+                {'action': 'store',
+                    'help': 'Name of input file.'},],
                 ]
     ##
     #             help='',
@@ -28,6 +32,6 @@ def do():
     # Collect args from user.
     args = parser.parse_args()
 
-    print vars(args)
+    print(vars(args))
     
 do()
