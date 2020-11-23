@@ -14,3 +14,4 @@ docker run --rm -v $(pwd):/foo -w /foo lambci/lambda:build-python3.8 \
 
 zip -r layer.zip python
 ```
+* And I like to use `vim layer.zip` to look at the contents 
