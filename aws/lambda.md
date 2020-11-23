@@ -12,4 +12,5 @@ rm -rf ${LIB_DIR} && mkdir -p ${LIB_DIR}
 docker run --rm -v $(pwd):/foo -w /foo lambci/lambda:build-python3.8 \
     pip install -r requirements.txt -t ${LIB_DIR}
 
+zip -r layer.zip python
 ```
