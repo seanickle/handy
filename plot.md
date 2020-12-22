@@ -14,6 +14,10 @@ def produce_overlayed_hists_for_col_dfs(col, dfs):
             ylabel=col)
 ```
 
+Basic goal looks like the below.
+
+<img src="assets/Screen%20Shot%202020-12-22%20at%2011.20.09.png" width="66%">
+
 #### sparse diagonal x axis ticks
 
 ```python
