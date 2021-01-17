@@ -14,6 +14,10 @@ def produce_overlayed_hists_for_col_dfs(col, dfs):
             ylabel=col)
 ```
 
+Basic goal looks like the below.
+
+<img src="assets/Screen%20Shot%202020-12-22%20at%2011.20.09.png" width="66%">
+
 #### sparse diagonal x axis ticks
 
 ```python
@@ -221,5 +225,29 @@ with plt.style.context('fivethirtyeight'):
 
 
 * more [colors](https://matplotlib.org/api/colors_api.html?highlight=color#module-matplotlib.colors)
+
+
+#### How to display a png from a file
+
+```python
+from IPython.display import Image, display
+loc = 'somefile.png'
+display(Image(filename=loc))
+
+
+```
+
+#### Prevent some parts of figure from getting cut off 
+* This `bbox_inches='tight'` option really helps
+```python
+with plt.style.context('fivethirtyeight'):
+    plt.plot(np.random.randint(0, 100, size=100), np.random.randint(0, 100, size=100))
+    plt.title('blah title')
+    out_loc = 'blah.png'
+    print('saving to ', out_loc)
+    pylab.savefig(out_loc, bbox_inches='tight')
+    pylab.close()
+
+```
 
 
