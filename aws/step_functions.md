@@ -11,7 +11,7 @@ step_function_stack.yaml
     Description: >-
       A description of the State Machine goes here. 
     Resources:
-      MyStateMachineNameResource:
+      MyStateMachineName:
         Type: AWS::StepFunctions::StateMachine
         Properties:
           RoleArn: "arn:aws:iam::{{aws_account_id}}:role/service-role/StepFunctions-MyStepFunctionRole"
@@ -26,6 +26,7 @@ step_function_stack.yaml
 manage_step_functions.py
     import boto3
     import os
+    import time
     from jinja2 import Environment
 
 
@@ -39,11 +40,11 @@ manage_step_functions.py
 
 
 
-    def update_step_function(full_json_definition,):
+    def update_step_function(stack_name, full_json_definition,):
         yaml = do_render(full_json_definition)
         client = boto3.client('cloudformation')
         response = client.update_stack(
-            StackName='GetOutLambdaStack',
+            StackName=stack_name,
             TemplateBody=yaml,
             Capabilities=[
                 'CAPABILITY_AUTO_EXPAND',
@@ -51,11 +52,11 @@ manage_step_functions.py
         return response
 
 
-    def create_step_function(full_json_definition,):
+    def create_step_function(stack_name, full_json_definition,):
         yaml = do_render(full_json_definition)
         client = boto3.client('cloudformation')
         response = client.update_stack(
-            StackName='GetOutLambdaStack',
+            StackName=stack_name,
             TemplateBody=yaml,
             Capabilities=[
                 'CAPABILITY_AUTO_EXPAND',
@@ -111,8 +112,8 @@ Create a step function
         step_function_definition = fd.read()
         
     import manage_step_functions as msf
-    
-    msf.create_step_function(step_function_definition)
+    stack_name = 'MyGloriousStepFuncStack'
+    msf.create_step_function(stack_name, step_function_definition)
     
     # If you are ready to update your State Machine, 
     #   you can edit step_function_definition.json or you might create a new file for reference,
@@ -121,7 +122,7 @@ Create a step function
     with open('step_function_definition-2021-01-29.json') as fd:
         step_function_definition = fd.read()
     
-    msf.update_step_function(step_function_definition)
+    msf.update_step_function(stack_name, step_function_definition)
     
     
 
