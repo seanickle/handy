@@ -118,6 +118,7 @@ Create a step function
     # If you are ready to update your State Machine, 
     #   you can edit step_function_definition.json or you might create a new file for reference,
     #   step_function_definition-2021-01-29.json
+    #   (Because at time of this writing Step Functions dont have versions like Lambda for instance)
     
     with open('step_function_definition-2021-01-29.json') as fd:
         step_function_definition = fd.read()
