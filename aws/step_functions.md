@@ -7,22 +7,22 @@
 #### `step_function_stack.yaml`
 
 ```yaml
-    AWSTemplateFormatVersion: '2010-09-09'
-    Transform: 'AWS::Serverless-2016-10-31'
-    Description: >-
-      A description of the State Machine goes here. 
-    Resources:
-      MyStateMachineName:
-        Type: AWS::StepFunctions::StateMachine
-        Properties:
-          RoleArn: "arn:aws:iam::{{aws_account_id}}:role/service-role/StepFunctions-MyStepFunctionRole"
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: >-
+  A description of the State Machine goes here. 
+Resources:
+  MyStateMachineName:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn: "arn:aws:iam::{{aws_account_id}}:role/service-role/StepFunctions-MyStepFunctionRole"
 
-          StateMachineName: "MyStateMachineName"
-          StateMachineType: "EXPRESS"
+      StateMachineName: "MyStateMachineName"
+      StateMachineType: "EXPRESS"
 
-          DefinitionString:
-            Fn::Sub: |
-              {{full_json_definition}}
+      DefinitionString:
+        Fn::Sub: |
+          {{full_json_definition}}
 ```
 
 #### `manage_step_functions.py`
