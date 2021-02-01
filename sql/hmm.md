@@ -464,5 +464,66 @@ ORDER BY event_object_table,event_manipulation
 ```
 
 
+#### Using window function to dedupe some data
+* Given some rows like 
+
+user_id|laptop|purchase_date
+--|--|--
+1|sony|1
+1|nokia|2
+1|bell|3
+2|3m|2
+2|nokia|8
+
+* If we want to dedupe by this simplified integer `purchase_date` 
+
+```sql
+
+with laptops(user_id, laptop, purchase_date) as  (
+    values (1, 'sony', 1),
+           (1, 'nokia', 2),
+           (1, 'bell', 3),
+           (2, '3m', 2),
+           (2, 'nokia', 8)
+)
+select l.*, row_number() over w as rnum
+from laptops as l
+window w as (partition by l.user_id order by purchase_date asc )
+
+```
+
+user_id|laptop|purchase_date|rnum
+--|--|--|--
+1|sony|1|1
+1|nokia|2|2
+1|bell|3|3
+2|3m|2|1
+2|nokia|8|2
+
+And then keep only the `rnum = 1` ...
+
+```sql
+with laptops(user_id, laptop, purchase_date) as  (
+    values (1, 'sony', 1),
+           (1, 'nokia', 2),
+           (1, 'bell', 3),
+           (2, '3m', 2),
+           (2, 'nokia', 8)
+),
+select aa.* from 
+(
+    select l.*, row_number() over w as rnum
+    from laptops as l
+    window w as (partition by l.user_id order by purchase_date asc )
+) as aa
+where aa.rnum = 1
+
+
+```
+
+user_id|laptop|purchase_date|rnum
+--|--|--|--
+1|sony|1|1
+2|3m|2|1
 
 
