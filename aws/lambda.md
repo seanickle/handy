@@ -3,8 +3,13 @@
 #### Make a zip file for a lambda layer
 * From a well written reference [here](https://medium.com/swlh/how-to-create-and-use-layer-for-python-aws-lambda-function-80bc6eefa331) : 
 * adjust the python version as needed
-```
+
+```bash
 #!/bin/bash
+
+echo -e "blah-lib==2.0
+umm-lib==0.45" > requirements.txt
+
 export LIB_DIR="python"
 
 rm -rf ${LIB_DIR} && mkdir -p ${LIB_DIR}
