@@ -7,7 +7,7 @@
 ```bash
 #!/bin/bash
 
-echo -e "blah-lib==2.0
+echo -e "blah-lib==2.0\n\
 umm-lib==0.45" > requirements.txt
 
 export LIB_DIR="python"
