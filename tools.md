@@ -29,3 +29,6 @@ pandoc -f markdown -t latex hello.txt
 ```
 
 And then use `pandoc -H options.sty blah.md -o blah.pdf` . Amazing! 
+
+#### pdf for kindle !!
+* Equally as amazing is the [k2pdf](https://www.willus.com/k2pdfopt/) software which restructures pdf files to comfortable kindle viewing. This is absolutely mind blowing work!
