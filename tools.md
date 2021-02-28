@@ -18,7 +18,7 @@ pandoc -f markdown -t latex hello.txt
 ```
 * Even `--toc, --table-of-contents`  , `--toc-depth=NUMBER`  , for automatic table of contents. 
 
-* Specifically for double spaced output pdf [this stackoverflow]() tip was amazing, to create a file like `options.sty` 
+* Specifically for double spaced output pdf [this stackoverflow](https://stackoverflow.com/a/14972019/472876) tip was amazing, to create a file like `options.sty` 
  
 ``` 
  \usepackage{setspace}
