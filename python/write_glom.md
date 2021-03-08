@@ -47,3 +47,7 @@ def transplant(source_dict, mappings):
 
 
 ```
+
+#### Note
+* I saw [someone on stack overflow](https://stackoverflow.com/questions/17980509/python-recursive-setattr-like-function-for-working-with-nested-dictionaries) had a similar question but the approach looks a bit complex. May look at this later.
+* 
