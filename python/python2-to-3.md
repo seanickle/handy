@@ -245,3 +245,6 @@ Out[37]: {'hi': 'there', 'hello': 'sailor'}
 
 ```
 
+#### urlparse
+* From `import urlparse` 
+* To `from urllib.parse import urlparse`
