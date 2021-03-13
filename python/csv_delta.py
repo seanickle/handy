@@ -29,6 +29,9 @@ def bake_options():
             [['--right', '-r'],
                 {'action': 'store',
                     'help': 'second file, when only two '},],
+            [['--out-dir', '-o'],
+                {'action': 'store',
+                    'help': 'where to write new files'},],
                 ]
     ##
     #             help='',
@@ -39,11 +42,11 @@ def bake_options():
     #             type='',
     
 def diff_files(files):
-    sets = [[x.split('/')[-1], set(readlines(x))] for x in files]
+    sets = [[x.split('/')[-1], (readlines(x))] for x in files]
     
     header_line = sets[0][1][0]
     
-    diff = [header_line] + list(sets[1][1] - sets[0][1])
+    diff = [header_line] + list(set(sets[1][1]) - set(sets[0][1]))
     
     print(f"producing {sets[1][0]} minus {sets[0][0]}")
     return diff
@@ -69,9 +72,9 @@ def do():
     args = parser.parse_args()
     args = vars(args)
     print(args)
-    outdir = args['outdir']
-    diff = diff_files([args["left"], args["right"]])
+    out_dir = args['out_dir']
+    diff_lines = diff_files([args["left"], args["right"]])
     
-    write_lines(lines, loc=f'{outdir}/{utc_ts()}-out.csv')
+    write_lines(diff_lines, loc=f'{out_dir}/{utc_ts()}-out.csv')
     
 do()
