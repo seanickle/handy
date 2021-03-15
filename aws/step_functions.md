@@ -135,3 +135,49 @@ msf.update_step_function(stack_name, step_function_definition)
 
    
 ```
+
+
+#### terraform step func
+* API Gateway v1 only works w/ `StartExecution` and not `StartSyncExecution` , but here is the basic terraform way to do that.
+* This approach assumes a `variables.tf` file that defines `sfn_orchestrater_arn` as your step function arn.
+ 
+```sh
+resource "aws_api_gateway_resource" "potato" {
+  rest_api_id = aws_api_gateway_rest_api.foo-api.id
+  parent_id   = aws_api_gateway_rest_api.foo-api.root_resource_id
+  path_part   = "potato"
+}
+
+resource "aws_api_gateway_method" "potato-method" {
+  rest_api_id   = aws_api_gateway_rest_api.foo-api.id
+  resource_id   = aws_api_gateway_resource.potato.id
+  http_method   = "POST"
+  authorization = "AWS_IAM"
+}
+
+resource "aws_api_gateway_integration" "potato-foo-integration" {
+  rest_api_id = aws_api_gateway_rest_api.foo-api.id
+  resource_id = aws_api_gateway_resource.potato.id
+  http_method = aws_api_gateway_method.potato-method.http_method
+  type        = "AWS"
+
+  integration_http_method = "POST"
+
+  credentials = "arn:aws:iam::${var.aws_account_id}:role/MyRoleFoo"
+
+  uri                  = "arn:aws:apigateway:${var.aws_region}:states:action/StartExecution"
+  passthrough_behavior = "NEVER"
+
+  request_templates = {
+    "application/x-amz-json-1.0" = <<EOF
+{
+"input": "$util.escapeJavaScript($input.json('$'))",
+"stateMachineArn": "${var.sfn_orchestrater_arn}"
+}
+EOF
+  }
+}
+
+
+```
+
