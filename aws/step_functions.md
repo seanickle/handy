@@ -179,5 +179,27 @@ EOF
 }
 
 
+resource "aws_api_gateway_method_response" "potato_response_200" {
+  rest_api_id = aws_api_gateway_rest_api.foo-api.id
+  resource_id = aws_api_gateway_resource.potato.id
+  http_method = aws_api_gateway_method.potato-method.http_method
+  status_code = "200"
+}
+
+resource "aws_api_gateway_integration_response" "potato_integration_response_200" {
+  rest_api_id = aws_api_gateway_rest_api.foo-api.id
+  resource_id = aws_api_gateway_resource.potato.id
+  http_method = aws_api_gateway_method.potato-method.http_method
+  status_code = aws_api_gateway_method_response.potato_response_200.status_code
+}
+
+resource "aws_api_gateway_method_response" "potato_response_400" {
+  rest_api_id = aws_api_gateway_rest_api.foo-api.id
+  resource_id = aws_api_gateway_resource.potato.id
+  http_method = aws_api_gateway_method.potato-method.http_method
+  status_code = "400"
+}
+
+
 ```
 
