@@ -527,3 +527,13 @@ user_id|laptop|purchase_date|rnum
 2|3m|2|1
 
 
+
+#### length of an array  is cardinality
+
+```sql
+select cardinality(ARRAY[[1,2],[3,4]])
+```
+```
+4
+```
+
