@@ -42,4 +42,6 @@ ALTER USER user_name WITH PASSWORD 'new_password';
 ```sql
 SELECT table_catalog, table_schema, table_name, privilege_type, grantee
 FROM   information_schema.table_privileges 
+where grantee = 'foo_user'
+
 ```
