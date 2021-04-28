@@ -537,3 +537,13 @@ select cardinality(ARRAY[[1,2],[3,4]])
 4
 ```
 
+#### logistic
+
+```sql
+CREATE or replace FUNCTION myschema.logistic(val float) RETURNS float AS $$
+BEGIN
+RETURN (1/(1 + ( exp(1)^(-(val))))) ;
+END; $$
+LANGUAGE PLPGSQL;
+
+```
