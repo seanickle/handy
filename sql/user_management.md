@@ -37,7 +37,7 @@ ALTER USER user_name WITH PASSWORD 'new_password';
 ```
 * can use `input()` here too actually 
 
-#### Check Existing Grants
+#### Check Existing Grants / permissions
 * The user running this query might not be able to see all the rows
 ```sql
 SELECT table_catalog, table_schema, table_name, privilege_type, grantee
