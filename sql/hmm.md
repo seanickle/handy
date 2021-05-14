@@ -547,3 +547,32 @@ END; $$
 LANGUAGE PLPGSQL;
 
 ```
+
+#### left join two tables with an extra condition and keep the null join rows
+* This was bothering me for a bit but I think I have found the solution multiple times now. 
+* Writing this out for later
+* In this example, there are authors and authors can have one or multiple articles. Self Join articles , to get multiple articles, but only where the left id is less than the right id.
+* This is a contrived example, but my use case typically is not a self join but a join with different tables, but the idea still holds.
+
+```sql
+with articles(author, article_id, article_title) as (values 
+        ('joe', 1, 'birds'),
+        ('joe', 2, 'more birds'),
+        ('sally', 3, 'eagles'),
+        ('sally', 4, 'seagulls'),
+        ('jan', 5, 'the philosophical of flying'))
+select a.author, a.article_id as left_id, a.article_title as left_title, b.article_id as right_id, b.article_title as right_title
+from articles as a left join articles as b on (a.author = b.author and a.article_id < b.article_id)
+
+```
+
+author|left_id|left_title|right_id|right_title
+--|--|--|--|--
+joe|1|birds|2|more birds
+joe|2|more birds|[NULL]|[NULL]
+sally|3|eagles|4|seagulls
+sally|4|seagulls|[NULL]|[NULL]
+jan|5|the philosophical of flying|[NULL]|[NULL]
+
+
+
