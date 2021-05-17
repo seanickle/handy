@@ -45,3 +45,22 @@ FROM   information_schema.table_privileges
 where grantee = 'foo_user'
 
 ```
+
+
+#### Check what roles `blah_user` is a part of 
+
+```sql
+WITH RECURSIVE cte AS (
+   SELECT oid FROM pg_catalog.pg_roles WHERE rolname = 'blah_user'
+
+   UNION ALL
+   SELECT m.roleid
+   FROM   cte
+   JOIN   pg_catalog.pg_auth_members m ON m.member = cte.oid
+   )
+SELECT oid, oid::regrole::text AS rolename FROM cte;  -- oid & name
+
+```
+
+
+
