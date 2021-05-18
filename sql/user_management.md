@@ -62,5 +62,17 @@ SELECT oid, oid::regrole::text AS rolename FROM cte;  -- oid & name
 
 ```
 
+#### Find owner of table
 
+```sql
+--
+select tablename, tableowner from pg_catalog.pg_tables 
+where schemaname = 'fooschema' 
+and tablename = 'footable'
+
+```
+
+tablename|tableowner
+--|--
+footable|foouser
 
