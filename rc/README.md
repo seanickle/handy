@@ -7,3 +7,7 @@ cd ~/.vim/pack/themes/opt/
 git clone git@github.com:lifepillar/vim-solarized8.git
 
 ```
+
+
+### Vim notes
+* Vim doesnt know about "terraform" files like `.tf` and [the hashivim github](https://github.com/hashivim/vim-terraform) helps with that. `vim-terraform` actually has a magical `:TerraformFmt` command that inspects the syntax of your `.tf` file too.

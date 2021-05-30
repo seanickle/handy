@@ -19,3 +19,5 @@ export PATH=/Applications/MacVim.app/Contents/bin:$PATH
 
 set -o vi
 
+# https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-HISTCONTROL
+export HISTCONTROL=ignorespace

@@ -3,8 +3,8 @@ import argparse
 def bake_options():
     return [
             [['--verbose', '-v'],
-                {'action': 'store_true',
-                    'help': 'pass to to be verbose with commands.'},
+                {'action': 'store_true',  # stores boolean
+                    'help': 'pass to to be verbose with commands'},
                 ],
             [['--dry-run', '-D'],
                 {'action': 'store_true',
@@ -13,6 +13,12 @@ def bake_options():
             [['--input-file', '-f'],
                 {'action': 'store',
                     'help': 'Name of input file.'},],
+                    'help': 'Dry run. Just print the command.  '},
+            ],
+            [['--color', '-c'],
+                {'action': 'store',  # Stores the value given
+                    'help': 'Dry run. Just print the command.  '},
+            ],
                 ]
     ##
     #             help='',

@@ -464,5 +464,115 @@ ORDER BY event_object_table,event_manipulation
 ```
 
 
+#### Using window function to dedupe some data
+* Given some rows like 
+
+user_id|laptop|purchase_date
+--|--|--
+1|sony|1
+1|nokia|2
+1|bell|3
+2|3m|2
+2|nokia|8
+
+* If we want to dedupe by this simplified integer `purchase_date` 
+
+```sql
+
+with laptops(user_id, laptop, purchase_date) as  (
+    values (1, 'sony', 1),
+           (1, 'nokia', 2),
+           (1, 'bell', 3),
+           (2, '3m', 2),
+           (2, 'nokia', 8)
+)
+select l.*, row_number() over w as rnum
+from laptops as l
+window w as (partition by l.user_id order by purchase_date asc )
+
+```
+
+user_id|laptop|purchase_date|rnum
+--|--|--|--
+1|sony|1|1
+1|nokia|2|2
+1|bell|3|3
+2|3m|2|1
+2|nokia|8|2
+
+And then keep only the `rnum = 1` ...
+
+```sql
+with laptops(user_id, laptop, purchase_date) as  (
+    values (1, 'sony', 1),
+           (1, 'nokia', 2),
+           (1, 'bell', 3),
+           (2, '3m', 2),
+           (2, 'nokia', 8)
+),
+select aa.* from 
+(
+    select l.*, row_number() over w as rnum
+    from laptops as l
+    window w as (partition by l.user_id order by purchase_date asc )
+) as aa
+where aa.rnum = 1
+
+
+```
+
+user_id|laptop|purchase_date|rnum
+--|--|--|--
+1|sony|1|1
+2|3m|2|1
+
+
+
+#### length of an array  is cardinality
+
+```sql
+select cardinality(ARRAY[[1,2],[3,4]])
+```
+```
+4
+```
+
+#### logistic
+
+```sql
+CREATE or replace FUNCTION myschema.logistic(val float) RETURNS float AS $$
+BEGIN
+RETURN (1/(1 + ( exp(1)^(-(val))))) ;
+END; $$
+LANGUAGE PLPGSQL;
+
+```
+
+#### left join two tables with an extra condition and keep the null join rows
+* This was bothering me for a bit but I think I have found the solution multiple times now. 
+* Writing this out for later
+* In this example, there are authors and authors can have one or multiple articles. Self Join articles , to get multiple articles, but only where the left id is less than the right id.
+* This is a contrived example, but my use case typically is not a self join but a join with different tables, but the idea still holds.
+
+```sql
+with articles(author, article_id, article_title) as (values 
+        ('joe', 1, 'birds'),
+        ('joe', 2, 'more birds'),
+        ('sally', 3, 'eagles'),
+        ('sally', 4, 'seagulls'),
+        ('jan', 5, 'the philosophical of flying'))
+select a.author, a.article_id as left_id, a.article_title as left_title, b.article_id as right_id, b.article_title as right_title
+from articles as a left join articles as b on (a.author = b.author and a.article_id < b.article_id)
+
+```
+
+author|left_id|left_title|right_id|right_title
+--|--|--|--|--
+joe|1|birds|2|more birds
+joe|2|more birds|[NULL]|[NULL]
+sally|3|eagles|4|seagulls
+sally|4|seagulls|[NULL]|[NULL]
+jan|5|the philosophical of flying|[NULL]|[NULL]
+
 
 
