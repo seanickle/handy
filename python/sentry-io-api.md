@@ -52,7 +52,7 @@ def get_all_data(url):
 
     return all_data
     
-def get_event_data(organization_slug, project_slug, event):
+def get_event_data(organization_slug, project_slug, event_id):
 
     url = f"https://sentry.io/api/0/projects/{organization_slug}/{project_slug}/events/{event_id}/"
     
