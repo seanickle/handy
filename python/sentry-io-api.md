@@ -14,10 +14,12 @@ events = get_all_issue_events(issue)
 import requests
 import time
 
-def get_all_issue_events(issue_id):
+def get_all_issue_events(organization_slug, project_slug, issue_id):
     url = 'https://app.getsentry.com/api/0/issues/%s/events/' % issue_id
     all_data = get_all_data(url)
-    return all_data
+    events = [x["id"] for x in all_data]
+    detail_vec = [get_event_data(organization_slug, project_slug, event) for event in events]
+    return all_data, detail_vec
 
 
 def get_all_data(url):
@@ -49,4 +51,16 @@ def get_all_data(url):
             next_results = 'false'
 
     return all_data
+    
+def get_event_data(organization_slug, project_slug, event):
+
+    url = f"https://sentry.io/api/0/projects/{organization_slug}/{project_slug}/events/{event_id}/"
+    
+    token = os.environ.get('SENTRY_AUTH_TOKEN')
+    headers = {"Authorization": "Bearer %s" % token,
+            'Content-Type': 'application/json'}
+    response = requests.get(url, headers=headers)
+    return response.json()
+    
+
 ```
