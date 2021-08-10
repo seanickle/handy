@@ -17,8 +17,8 @@ import time
 def get_all_issue_events(organization_slug, project_slug, issue_id):
     url = 'https://app.getsentry.com/api/0/issues/%s/events/' % issue_id
     all_data = get_all_data(url)
-    events = [x["id"] for x in all_data]
-    detail_vec = [get_event_data(organization_slug, project_slug, event) for event in events]
+    event_ids = [x["id"] for x in all_data]
+    detail_vec = [get_event_data(organization_slug, project_slug, event_id) for event_id in event_ids]
     return all_data, detail_vec
 
 
