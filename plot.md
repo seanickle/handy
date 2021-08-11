@@ -52,6 +52,73 @@ fig.show()
 
 <img src="https://github.com/seanickle/handy/blob/master/assets/Screen%20Shot%202020-07-23%20at%2011.40.26%20AM.png?raw=true" width="50%">
 
+#### Multiple time plots and fill nulls with zeroes!
+* Need to fill the nulls, otherwise the behavior can be weird.
+* Here, have a `df` with `timestamp` and `label` , that is sparse, (meaning there are missing rows)
+* 
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+import datetime
+import random
+
+def random_df(size=500):
+    X = [random.random() for _ in range(size)]
+    vec = []
+    for (i, x) in enumerate(X):
+    	vec.extend([{
+    		"label": ("one" if x <= 0.33 else ("two" if 0.33 < x <= 0.66 else "three")),
+		"timestamp": datetime.date(2021, 1, 1) + datetime.timedelta(days=1*i)
+    }
+    for _ in range(random.randint(0, 50))
+    ])
+    return pd.DataFrame.from_records(vec)
+
+
+def fill_empties(statsdf):
+    statsdf = statsdf.copy()
+    for x in statsdf["date"].unique().tolist():
+        for label in statsdf.label.unique().tolist():
+            if statsdf[(statsdf.date == x) & (statsdf.label == label)].empty:
+                statsdf = pd.concat([statsdf,
+                    pd.DataFrame.from_records([{"date": x, "label": label, "count": 0}])],
+                    ignore_index=True
+                )
+    statsdf = statsdf.sort_values(by=["date", "label"])
+    return statsdf
+
+
+def plot_trends(df, out_loc):
+    statsdf = df.groupby(by=['date', 'label']).size().reset_index().rename(columns={0: "count"})
+    statsdf = fill_empties(statsdf)
+
+    fig = plt.figure(figsize=(12,4))
+    ax = fig.add_subplot(111)
+    x = statsdf.date.unique().tolist()
+    x_ticks, x_labels = make_xtick_labels(x, step=3)
+    for label in statsdf.label.unique().tolist():
+        x = statsdf[statsdf.label == label]['date'].tolist()
+        y = statsdf[statsdf.label == label]['count'].tolist()
+        ax.plot(x, y, label=label)
+
+    ax.set_xticks(x_ticks)
+    ax.set_xticklabels(x_labels, rotation=-45)
+
+    ax.legend()
+    print('saving to ', out_loc)
+    pylab.savefig(out_loc)
+    pylab.close()
+
+#
+df = random_df(100)
+df["date"] = df["timestamp"].map(lambda x:x.strftime("%m-%d"))
+workdir = "some_folder"
+out_loc = f"{workdir}/trends.png"
+plot_trends(df, out_loc)
+```
+
+<img src="https://github.com/seanickle/handy/blob/master/assets/2021-08-11T165837M537004Z-trends.png">
 
 #### Heatmaps are nice
 
