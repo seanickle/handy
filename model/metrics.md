@@ -156,3 +156,8 @@ plt.show()
 ```
 
 <img src="https://github.com/seanickle/handy/blob/master/assets/ks.png">
+
+
+### References
+* https://www.datavedas.com/model-evaluation-in-python/
+
