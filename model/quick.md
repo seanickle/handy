@@ -9,7 +9,10 @@ X, y = load_iris(return_X_y=True)
 clf = LogisticRegression(
 	random_state=0,
 	penalty="l2",
-	).fit(X, y)
+	class_weight="balanced", # or dict {0: 0.1, 1: 0.9}
+	).fit(X, y,
+		# sample_weight= # array , n_samples, for each row.
+)
 clf.predict(X[:2, :])
 
 clf.predict_proba(X[:2, :])
@@ -34,7 +37,9 @@ clf = RandomForestClassifier(
 	n_estimators=100,
 	class_weight= # "balanced", "balanced_subsample" or {0: 0.1, 1: 0.9 } weights per class 
 )
-clf.fit(X, y)
+clf.fit(X, y,
+	# sample_weight= # array , n_samples, for each row.
+)
 
 print(clf.predict([[0, 0, 0, 0]]))
 
@@ -92,6 +97,11 @@ fpr, tpr, thresholds = metrics.roc_curve(y_true, y_pred, pos_label=1)
 metrics.auc(fpr, tpr)
 # Out[32]: 0.9255152329749103
 
+
+metrics.log_loss(y_true, y_pred,)
+Out[33]: 2.590464201438415
+
+
 ```
 
 ```
@@ -100,3 +110,33 @@ from sklearn.preprocessing import StandardScaler
 ```
 
 
+#### Cross Validation 
+* https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold
+```python
+>>> import numpy as np
+>>> from sklearn.model_selection import (
+	KFold,
+	StratifiedKFold, # preserves percentage of samples per class.
+)
+>>> X = np.array([[1, 2], [3, 4], [1, 2], [3, 4]])
+>>> y = np.array([1, 2, 3, 4])
+>>> kf = KFold(n_splits=2)
+>>> kf.get_n_splits(X)
+2
+>>> print(kf)
+KFold(n_splits=2, random_state=None, shuffle=False)
+>>> for train_index, test_index in kf.split(X):
+...     print("TRAIN:", train_index, "TEST:", test_index)
+...     X_train, X_test = X[train_index], X[test_index]
+...     y_train, y_test = y[train_index], y[test_index]
+TRAIN: [2 3] TEST: [0 1]
+TRAIN: [0 1] TEST: [2 3]
+
+```
+
+```
+from sklearn import utils
+utils.class_weight.compute_class_weight()
+utils.class_weight.compute_sample_weight()
+
+```

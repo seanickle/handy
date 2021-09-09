@@ -1,4 +1,10 @@
 
+###  TPR, FPR
+
+```python
+tpr = 1.0*TP/(FN + TP) # aka recall
+fpr = 1.0*FP/(FP + TN) # 
+```
 
 ### Confusion matrix
 * Given a `testdf` where first column contains actual labels, `0`, `1`, and `predictions` is a list of probabilities, 
