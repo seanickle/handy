@@ -87,7 +87,11 @@ Out[30]:
 array([[434,  70],
        [  5, 491]])
 
-# metrics.auc(x, y)
+
+fpr, tpr, thresholds = metrics.roc_curve(y_true, y_pred, pos_label=1)
+metrics.auc(fpr, tpr)
+# Out[32]: 0.9255152329749103
+
 ```
 
 ```
