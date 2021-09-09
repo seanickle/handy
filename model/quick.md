@@ -22,12 +22,18 @@ clf.decision_function(X)
 ```
 
 ```python
+from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import make_classification
 X, y = make_classification(n_samples=1000, n_features=4,
                            n_informative=2, n_redundant=0,
                            random_state=0, shuffle=False)
-clf = RandomForestClassifier(max_depth=2, random_state=0)
+clf = RandomForestClassifier(
+	max_depth=2,
+	random_state=0,
+	n_estimators=100,
+	class_weight= # "balanced", "balanced_subsample" or {0: 0.1, 1: 0.9 } weights per class 
+)
 clf.fit(X, y)
 
 print(clf.predict([[0, 0, 0, 0]]))
@@ -70,6 +76,23 @@ In [22]: print(clf.predict([[0, 0, 0, 0]]))
 [1]
 
 
+y_true = y
+y_pred = clf.pred(X)
+metrics.accuracy_score(y_true, y_pred)
+Out[29]: 0.925
+
+
+metrics.confusion_matrix(y_true, y_pred)
+Out[30]: 
+array([[434,  70],
+       [  5, 491]])
+
+# metrics.auc(x, y)
+```
+
+```
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 ```
 
 
