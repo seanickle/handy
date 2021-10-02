@@ -30,5 +30,45 @@ pandoc -f markdown -t latex hello.txt
 
 And then use `pandoc -H options.sty blah.md -o blah.pdf` . Amazing! 
 
+#### change margins 
+* Per this [really cool answer](https://stackoverflow.com/questions/13515893/set-margin-size-when-converting-from-markdown-to-pdf-with-pandoc) , here's a quick way to change margins to `1inch`
+
+```
+pandoc -V geometry:margin=1in -o output.pdf input.md
+```
+* Not sure yet how this is used by LaTeX , but you can also add this as the markdown front matter too
+
+```
+
+Recent versions of rmarkdown and pandoc
+
+In more recent versions of rmarkdown, the settings of margins can be done in the YAML header via the top-level element geometry. What you specify in the geometry tag will be piped into the LaTeX template that ships with Pandoc via the following LaTeX snippet
+
+$if(geometry)$
+\usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+$endif$
+
+For example, to specify margins that are 2cm in width one would include
+
+---
+title: "Habits"
+author: John Doe
+date: March 22, 2005
+geometry: margin=2cm
+output: pdf_document
+---
+
+For more complex specifications to be passed to the geometry LaTeX package, string options together as you would with LaTeX:
+
+---
+title: "Habits"
+author: John Doe
+date: March 22, 2005
+geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
+output: pdf_document
+---
+
+```
+
 #### pdf for kindle !!
 * Equally as amazing is the [k2pdf](https://www.willus.com/k2pdfopt/) software which restructures pdf files to comfortable kindle viewing. This is absolutely mind blowing work!
