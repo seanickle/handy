@@ -8,6 +8,11 @@ def bake_options():
                 ],
             [['--dry-run', '-D'],
                 {'action': 'store_true',
+                    'help': 'Dry run. Just print the command.'},],
+
+            [['--input-file', '-f'],
+                {'action': 'store',
+                    'help': 'Name of input file.'},],
                     'help': 'Dry run. Just print the command.  '},
             ],
             [['--color', '-c'],
@@ -33,6 +38,6 @@ def do():
     # Collect args from user.
     args = parser.parse_args()
 
-    print vars(args)
+    print(vars(args))
     
 do()
