@@ -1,0 +1,64 @@
+
+Description: "Awesome Sagemaker Stack"
+
+Resources:
+  AwesomeEndpoint:
+    Type: "AWS::SageMaker::Endpoint"
+    DeletionPolicy: Retain
+    Properties:
+      EndpointName: "my-clever-endpoint-name"
+      EndpointConfigName:
+        !GetAtt AwesomeEndpointConfig.EndpointConfigName
+
+  AwesomeEndpointConfig:
+    Type: "AWS::SageMaker::EndpointConfig"
+    DeletionPolicy: Retain
+    Properties:
+      ProductionVariants:
+        - InitialInstanceCount: 1
+          InitialVariantWeight: 1.0
+          InstanceType: ml.t2.medium
+          ModelName: !GetAtt AmazingModel.ModelName
+          VariantName: !GetAtt AmazingModel.ModelName
+
+  AmazingModel:
+    Type: AWS::SageMaker::Model
+    DeletionPolicy: Retain
+    Properties:
+      EnableNetworkIsolation: true
+      ExecutionRoleArn: "arn:aws:iam::{{aws_account_id}}:role/service-role/My-Awesome-AmazonSageMaker-ExecutionRole"
+      ModelName: "AmazingModel"
+      PrimaryContainer:
+        Image: "{{aws_account_id}}.dkr.ecr.{{region}}.amazonaws.com/the-ecr-repo-name:0.6"
+        Mode: "SingleModel"
+        ModelDataUrl: "s3://{{bucket}}/cool/place/for/artifaacts/bundle.joblib.tar.gz"
+
+
+
+A Role , with "AmazonSageMakerFullAccess" and also ... 
+# Execution Policy also ... 
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::SageMaker"
+            ]
+        },
+        {
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::SageMaker/*"
+            ]
+        }
+    ]
+}
