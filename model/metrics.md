@@ -91,9 +91,9 @@ def calc_f1(TP, FP, TN, FN):
 
 def ks_for_cutoff(TP, FP, TN, FN):
     
-    #  It is the maximum difference between TPR (aka recall) and FPR ()
-    tpr = 1.0*TP/(FN + TP) # aka recall
-    fpr = 1.0*FP/(FP + TN)
+    #  It is the maximum difference between TPR (aka recall) and FPR (aka fall-out)
+    tpr = 1.0*TP/(FN + TP) #  = TP / P #  aka recall
+    fpr = 1.0*FP/(FP + TN) #  = FP / N #  aka fall-out
     return tpr - fpr
     
 
